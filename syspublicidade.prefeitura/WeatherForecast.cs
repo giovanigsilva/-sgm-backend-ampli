@@ -1,4 +1,4 @@
-namespace syspublicidade.prefeitura
+namespace syspublicidade.prefeitura.api
 {
     public class WeatherForecast
     {

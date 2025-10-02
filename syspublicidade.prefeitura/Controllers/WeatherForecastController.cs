@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace syspublicidade.prefeitura.Controllers
+namespace syspublicidade.prefeitura.api.Controllers
 {
     [ApiController]
     [Route("[controller]")]

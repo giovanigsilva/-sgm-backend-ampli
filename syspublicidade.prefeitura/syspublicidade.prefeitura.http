@@ -1,0 +1,6 @@
+@syspublicidade.prefeitura_HostAddress = http://localhost:5183
+
+GET {{syspublicidade.prefeitura_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

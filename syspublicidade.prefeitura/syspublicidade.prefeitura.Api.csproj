@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Cortex.Mediator" Version="1.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.9" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
@@ -18,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\syspublicidade.prefeitura.Application\syspublicidade.prefeitura.Application.csproj" />
     <ProjectReference Include="..\syspublicidade.prefeitura.Infrastructure\syspublicidade.prefeitura.Infrastructure.csproj" />
   </ItemGroup>
 

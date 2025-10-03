@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Cortex.Mediator" Version="1.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\syspublicidade.prefeitura.Domain\syspublicidade.prefeitura.Domain.csproj" />
+    <ProjectReference Include="..\syspublicidade.prefeitura.Infrastructure\syspublicidade.prefeitura.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

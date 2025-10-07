@@ -23,5 +23,6 @@ namespace syspublicidade.prefeitura.Domain.Entities
 
         public Guid UsuarioId { get; set; }
         public Usuarios Usuario { get; set; } = default!;
+        public string? CaminhoFoto { get; set; }
     }
 }

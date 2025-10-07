@@ -1,26 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace syspublicidade.prefeitura.Application.DTOs
 {
     public sealed record NoticiasDto(
-    Guid Id,
-    string Titulo,
-    string Conteudo,
-    string Categoria,
-    DateTime CriadoEm,
-    string Autor
-);
+        Guid Id,
+        string Titulo,
+        string Conteudo,
+        string Categoria,
+        DateTime CriadoEm,
+        string Autor,
+        string? CaminhoFoto = null
+    );
 
     // DTO usado no Create
     public sealed record CriarNoticiaDto(
         string Titulo,
         string Conteudo,
         string Categoria,
-        Guid UsuarioId
+        Guid UsuarioId,
+       string? CaminhoFoto = null
     );
 
     // DTO usado no Update
@@ -28,6 +26,6 @@ namespace syspublicidade.prefeitura.Application.DTOs
         Guid Id,
         string Titulo,
         string Conteudo,
-        string Categoria
-    );
+        string Categoria,
+        string? CaminhoFoto = null);
 }

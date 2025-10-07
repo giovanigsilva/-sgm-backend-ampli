@@ -9,13 +9,13 @@ using syspublicidade.prefeitura.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace syspublicidade.prefeitura.Application.features.NoticiasM.Handlers
 {
     public sealed class CriarNoticiaHandler(AppDbContext db)
-    : ICommandHandler<CriarNoticiaCommand, NoticiasDto>
+        : ICommandHandler<CriarNoticiaCommand, NoticiasDto>
     {
         public async Task<NoticiasDto> Handle(CriarNoticiaCommand command, CancellationToken ct)
         {
@@ -30,17 +30,27 @@ namespace syspublicidade.prefeitura.Application.features.NoticiasM.Handlers
                 Titulo = command.Noticia.Titulo,
                 Conteudo = command.Noticia.Conteudo,
                 Categoria = categoria,
-                UsuarioId = usuario.Id
+                UsuarioId = usuario.Id,
+                CaminhoFoto = command.Noticia.CaminhoFoto
             };
 
             db.Noticias.Add(entity);
             await db.SaveChangesAsync(ct);
 
-            return new NoticiasDto(entity.Id, entity.Titulo, entity.Conteudo, entity.Categoria.ToString(), entity.CriadoEm, usuario.Nome);
+            return new NoticiasDto(
+                entity.Id,
+                entity.Titulo,
+                entity.Conteudo,
+                entity.Categoria.ToString(),
+                entity.CriadoEm,
+                usuario.Nome,
+                entity.CaminhoFoto
+            );
         }
     }
+
     public sealed class AtualizarNoticiaHandler(AppDbContext db)
-    : ICommandHandler<AtualizarNoticiaCommand, NoticiasDto>
+        : ICommandHandler<AtualizarNoticiaCommand, NoticiasDto>
     {
         public async Task<NoticiasDto> Handle(AtualizarNoticiaCommand command, CancellationToken ct)
         {
@@ -52,16 +62,26 @@ namespace syspublicidade.prefeitura.Application.features.NoticiasM.Handlers
             noticia.Titulo = command.Noticia.Titulo;
             noticia.Conteudo = command.Noticia.Conteudo;
             noticia.Categoria = categoria;
+            noticia.CaminhoFoto = command.Noticia.CaminhoFoto;
 
             await db.SaveChangesAsync(ct);
 
             var usuario = await db.Usuarios.FindAsync(new object?[] { noticia.UsuarioId }, ct);
 
-            return new NoticiasDto(noticia.Id, noticia.Titulo, noticia.Conteudo, noticia.Categoria.ToString(), noticia.CriadoEm, usuario?.Nome ?? "");
+            return new NoticiasDto(
+                noticia.Id,
+                noticia.Titulo,
+                noticia.Conteudo,
+                noticia.Categoria.ToString(),
+                noticia.CriadoEm,
+                usuario?.Nome ?? "",
+                noticia.CaminhoFoto
+            );
         }
     }
+
     public sealed class DeletarNoticiaHandler(AppDbContext db)
-    : ICommandHandler<DeletarNoticiaCommand, bool>
+        : ICommandHandler<DeletarNoticiaCommand, bool>
     {
         public async Task<bool> Handle(DeletarNoticiaCommand command, CancellationToken ct)
         {
@@ -76,7 +96,7 @@ namespace syspublicidade.prefeitura.Application.features.NoticiasM.Handlers
     }
 
     public sealed class GetNoticiaByIdHandler(AppDbContext db)
-    : IQueryHandler<GetNoticiaByIdQuery, NoticiasDto?>
+        : IQueryHandler<GetNoticiaByIdQuery, NoticiasDto?>
     {
         public async Task<NoticiasDto?> Handle(GetNoticiaByIdQuery query, CancellationToken ct)
         {
@@ -85,11 +105,20 @@ namespace syspublicidade.prefeitura.Application.features.NoticiasM.Handlers
 
             var usuario = await db.Usuarios.FindAsync(new object?[] { noticia.UsuarioId }, ct);
 
-            return new NoticiasDto(noticia.Id, noticia.Titulo, noticia.Conteudo, noticia.Categoria.ToString(), noticia.CriadoEm, usuario?.Nome ?? "");
+            return new NoticiasDto(
+                noticia.Id,
+                noticia.Titulo,
+                noticia.Conteudo,
+                noticia.Categoria.ToString(),
+                noticia.CriadoEm,
+                usuario?.Nome ?? "",
+                noticia.CaminhoFoto
+            );
         }
     }
+
     public sealed class ListarNoticiasHandler(AppDbContext db)
-    : IQueryHandler<ListarNoticiasQuery, List<NoticiasDto>>
+        : IQueryHandler<ListarNoticiasQuery, List<NoticiasDto>>
     {
         public async Task<List<NoticiasDto>> Handle(ListarNoticiasQuery query, CancellationToken ct)
         {
@@ -101,12 +130,15 @@ namespace syspublicidade.prefeitura.Application.features.NoticiasM.Handlers
                     n.Conteudo,
                     n.Categoria.ToString(),
                     n.CriadoEm,
-                    n.Usuario.Nome))
+                    n.Usuario.Nome,
+                    n.CaminhoFoto
+                ))
                 .ToListAsync(ct);
         }
     }
+
     public sealed class ListarUltimasNoticiasHandler(AppDbContext db)
-    : IQueryHandler<ListarUltimasNoticiasQuery, Dictionary<string, List<NoticiasDto>>>
+        : IQueryHandler<ListarUltimasNoticiasQuery, Dictionary<string, List<NoticiasDto>>>
     {
         public async Task<Dictionary<string, List<NoticiasDto>>> Handle(ListarUltimasNoticiasQuery query, CancellationToken ct)
         {
@@ -125,7 +157,9 @@ namespace syspublicidade.prefeitura.Application.features.NoticiasM.Handlers
                         n.Conteudo,
                         n.Categoria.ToString(),
                         n.CriadoEm,
-                        n.Usuario.Nome))
+                        n.Usuario.Nome,
+                        n.CaminhoFoto
+                    ))
                     .ToListAsync(ct);
 
                 result[categoria.ToString()] = noticias;

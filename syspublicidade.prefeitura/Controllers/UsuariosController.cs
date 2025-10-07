@@ -1,4 +1,5 @@
 ﻿using Cortex.Mediator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using syspublicidade.prefeitura.Application.DTOs;
 using syspublicidade.prefeitura.Application.features.UsuariosM.Commands;
@@ -7,6 +8,7 @@ using syspublicidade.prefeitura.Application.features.UsuariosM.Queries;
 namespace syspublicidade.prefeitura.Api.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
 public class UsuariosController(IMediator mediator) : ControllerBase
 {

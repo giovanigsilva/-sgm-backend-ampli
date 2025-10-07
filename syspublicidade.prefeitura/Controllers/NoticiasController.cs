@@ -1,4 +1,5 @@
 ﻿using Cortex.Mediator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using syspublicidade.prefeitura.Application.DTOs;
 using syspublicidade.prefeitura.Application.features.NoticiasM.Commands;
@@ -7,18 +8,22 @@ using syspublicidade.prefeitura.Application.features.NoticiasM.Queries;
 namespace syspublicidade.prefeitura.Api.Controllers;
 
 [ApiController]
+
 [Route("api/[controller]")]
 public class NoticiasController(IMediator mediator) : ControllerBase
 {
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<NoticiasDto>> Criar([FromBody] CriarNoticiaDto dto, CancellationToken ct)
         => await mediator.SendCommandAsync<CriarNoticiaCommand, NoticiasDto>(new CriarNoticiaCommand(dto), ct);
 
     [HttpPut]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<NoticiasDto>> Atualizar([FromBody] AtualizarNoticiaDto dto, CancellationToken ct)
         => await mediator.SendCommandAsync<AtualizarNoticiaCommand, NoticiasDto>(new AtualizarNoticiaCommand(dto), ct);
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> Deletar(Guid id, CancellationToken ct)
     {
         var result = await mediator.SendCommandAsync<DeletarNoticiaCommand, bool>(new DeletarNoticiaCommand(id), ct);

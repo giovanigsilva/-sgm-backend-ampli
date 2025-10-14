@@ -41,4 +41,8 @@ public class NoticiasController(IMediator mediator) : ControllerBase
     [HttpGet("ultimas")]
     public async Task<ActionResult<Dictionary<string, List<NoticiasDto>>>> ListarUltimas(CancellationToken ct)
         => await mediator.SendQueryAsync<ListarUltimasNoticiasQuery, Dictionary<string, List<NoticiasDto>>>(new ListarUltimasNoticiasQuery(), ct);
+
+    [HttpGet("estatisticas/ultimos7dias")]
+public async Task<ActionResult<List<NoticiasPorDiaDto>>> GetUltimos7Dias(CancellationToken ct)
+    => await mediator.SendQueryAsync<GetNoticiasUltimos7DiasQuery, List<NoticiasPorDiaDto>>(new GetNoticiasUltimos7DiasQuery(), ct);
 }
